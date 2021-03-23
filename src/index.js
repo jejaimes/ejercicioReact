@@ -50,7 +50,14 @@ const campos = [
     "type": "checkbox"
   },
   {
-    "name": "",
+    "name": "Radio 1",
+    "type": "radio"
+  },{
+    "name": "Radio 2",
+    "type": "radio"
+  },
+  {
+    "name": "OPciones",
     "type": "options",
     "options": [
       "option 1",
@@ -60,37 +67,37 @@ const campos = [
   }
 ]
 
-const renderOpciones = (opciones) => {
-  opciones.map((opcion) => {
-    return <option>opcion</option>
-  })
-}
-
 const renderCampos = campos.map((campo) => {
-  if (campo.type === 'checkbox') {
+  if (campo.type === 'checkbox' || campo.type === 'radio') {
     return (<Form.Group controlId={campo.name}>
               <Form.Check type={campo.type} label={campo.name} />
             </Form.Group>)
-  } else if (campo.type === 'submit') {
-return (<Button variant="primary" type={campo.type}>
-          {campo.name}
-        </Button>)
-  } else if (campo.type === 'reset') {
-  return (<Button variant="primary" type={campo.type}>
-            {campo.name}
-          </Button>)
+  } else if (campo.type === 'submit' || campo.type === 'reset' || campo.type === 'button') {
+    return (<Button variant="primary" type={campo.type}>
+              {campo.name}
+            </Button>)
   } else if (campo.type === 'options') {
-return (<Form.Group controlId="exampleForm.ControlSelect1">
-          <Form.Label>{campo.name}</Form.Label>
-          <Form.Control as="select">
-            {renderOpciones(campo.options)}
-          </Form.Control>
-        </Form.Group>)
-  } else {
-  return (<Form.Group controlId={campo.name}>
+    const renderOpciones = campo.options.map((opcion) => <option key={opcion}>{opcion}</option>)
+    return (<Form.Group controlId={campo.name}>
             <Form.Label>{campo.name}</Form.Label>
-            <Form.Control type={campo.type} placeholder={campo.placeholder} />
+            <Form.Control as="select">
+              {renderOpciones}
+            </Form.Control>
           </Form.Group>)
+  } else if (campo.type === 'file') {
+    return (<Form.Group>
+              <Form.File id={campo.name} label={campo.name} />
+            </Form.Group>)
+  } else if (campo.type === 'range') {
+    return (<Form.Group controlId="formBasicRange">
+              <Form.Label>{campo.name}</Form.Label>
+              <Form.Control type={campo.type} />
+            </Form.Group>)
+  } else {
+    return (<Form.Group controlId={campo.name}>
+              <Form.Label>{campo.name}</Form.Label>
+              <Form.Control type={campo.type} placeholder={campo.placeholder} />
+            </Form.Group>)
   }
 })
 
